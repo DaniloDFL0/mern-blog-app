@@ -1,6 +1,7 @@
 import User from "../models/userModel.js"
 import bcrypt from "bcryptjs"
 import errorHandler from "../utils/error.js"
+import setCookieAndGenerateToken from "../utils/setCookieAndGenerateToken.js"
 
 export const signup = async (req, res, next) => {
     try {
@@ -21,7 +22,32 @@ export const signup = async (req, res, next) => {
         })
         const savedUser = await newUser.save()
 
-        res.status(201).json(savedUser)
+        setCookieAndGenerateToken(savedUser._id, res)
+
+        const { password: pass, ...rest } = savedUser._doc
+
+        res.status(201).json(rest)
+        
+    } catch(error) {
+        console.log(error)
+        next(error)
+    }
+}
+
+export const signin = async (req, res, next) => {
+    try {
+        const { email, password } = req.body
+
+        const user = await User.findOne({ email })
+        const isPasswordCorrect = await bcrypt.compare(password, user?.password || "")
+
+        if(!user || !isPasswordCorrect) return next(errorHandler(400, "Username or password is incorrect"))
+
+        setCookieAndGenerateToken(user._id, res)
+
+        const { password: pass , ...rest } = user._doc
+
+        res.status(200).json(rest)
         
     } catch(error) {
         console.log(error)
