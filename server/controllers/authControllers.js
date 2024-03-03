@@ -22,8 +22,6 @@ export const signup = async (req, res, next) => {
         })
         const savedUser = await newUser.save()
 
-        setCookieAndGenerateToken(savedUser._id, res)
-
         const { password: pass, ...rest } = savedUser._doc
 
         res.status(201).json(rest)
@@ -41,7 +39,7 @@ export const signin = async (req, res, next) => {
         const user = await User.findOne({ email })
         const isPasswordCorrect = await bcrypt.compare(password, user?.password || "")
 
-        if(!user || !isPasswordCorrect) return next(errorHandler(400, "Username or password is incorrect"))
+        if(!user || !isPasswordCorrect) return next(errorHandler(400, "Email or password is incorrect"))
 
         setCookieAndGenerateToken(user._id, res)
 

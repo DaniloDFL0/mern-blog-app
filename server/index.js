@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js"
 dotenv.config()
 const app = express()
 app.use(express.json({ limit: "30mb" }))
+app.use(express.urlencoded({ limit: "30mb", extended: true }))
 
 // ROUTES
 app.use("/api/auth", authRoutes)

@@ -1,6 +1,6 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { HiInformationCircle } from 'react-icons/hi'
 
 const SignUpPage = () => {
@@ -11,6 +11,7 @@ const SignUpPage = () => {
   })
   const [errorMessage, setErrorMessage] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleSignUp = async (e) => {
     e.preventDefault()
@@ -27,10 +28,12 @@ const SignUpPage = () => {
       })
       const data = await res.json()
 
-      if(!data.success) {
+      if(data.success === false) {
         setErrorMessage(data.message)
         return
       }
+
+      navigate("/sign-in")
 
     } catch(error) {
       setErrorMessage(error.message)
