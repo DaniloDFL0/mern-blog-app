@@ -41,7 +41,7 @@ const SignInPage = () => {
 
   return (
     <div className="flex mt-32 justify-center">
-      <div className="border border-slate-300 rounded-lg w-[350px] max-lg:w-[280px] p-4">
+      <div className="border border-slate-300 dark:border-slate-600 rounded-lg w-[350px] max-lg:w-[280px] p-4">
         <div className="text-2xl text-center">Sign In</div>
         {errorMessage && (
           <Alert color={"failure"} icon={HiInformationCircle} className="my-3">

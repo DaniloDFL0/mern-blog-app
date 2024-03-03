@@ -7,7 +7,7 @@ import HeaderLayout from "./layouts/HeaderLayout"
 
 const App = () => {
   return (
-    <>
+    <div className="dark:bg-blue-950 min-h-screen">
       <Routes>
         <Route element={<HeaderLayout />}>
           <Route path="/" element={<HomePage />}/>
@@ -16,7 +16,7 @@ const App = () => {
           <Route path="/dashboard" element={<DashboardPage />}/>
         </Route>
       </Routes>
-    </>
+    </div>
   )
 }
 
