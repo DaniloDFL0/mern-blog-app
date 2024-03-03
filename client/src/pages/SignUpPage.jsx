@@ -2,6 +2,7 @@ import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { HiInformationCircle } from 'react-icons/hi'
+import OAuth from "../components/OAuth"
 
 const SignUpPage = () => {
   const [inputs, setInputs] = useState({
@@ -93,6 +94,7 @@ const SignUpPage = () => {
               </>
             ) : "Sign Up"}
           </Button>
+          <OAuth />
         </form>
         <div className="hover:text-pink-500 cursor-pointer hover:underline mt-2">
           <Link to={"/sign-in"}>Already have an account? Sign In</Link>

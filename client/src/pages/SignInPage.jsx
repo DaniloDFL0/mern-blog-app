@@ -4,6 +4,7 @@ import { HiInformationCircle } from "react-icons/hi"
 import { Link } from "react-router-dom"
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice"
 import { useDispatch, useSelector } from "react-redux"
+import OAuth from "../components/OAuth"
 
 const SignInPage = () => {
   const [email, setEmail] = useState("")
@@ -78,6 +79,7 @@ const SignInPage = () => {
               </>
             ) : "Sign In"}
           </Button>
+          <OAuth />
         </form>
         <div className="hover:text-pink-500 cursor-pointer hover:underline mt-2">
           <Link to={"/sign-up"}>Don't have an account? Sign Up</Link>

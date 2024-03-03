@@ -52,3 +52,37 @@ export const signin = async (req, res, next) => {
         next(error)
     }
 }
+
+export const googleAuth = async (req, res, next) => {
+    try {
+        const { name, email, googlePhotoURL } = req.body
+
+        const user = await User.findOne({ email })
+
+        if(user) {
+            setCookieAndGenerateToken(user._id, res)
+            const { password, ...rest } = user._doc
+    
+            return res.status(200).json(rest)
+        } else {
+            const generatedPassword = Math.random().toString(36).slice(-8)
+            const salt = await bcrypt.genSalt(10)
+            const passwordHash = await bcrypt.hash(generatedPassword, salt)
+
+            const newUser = new User({
+                username: name.toLowerCase().split(" ").join("") + Math.random().toString(9).slice(-4),
+                email,
+                password: passwordHash,
+                profilePicture: googlePhotoURL
+            })
+            const savedUser = await newUser.save()
+            setCookieAndGenerateToken(savedUser._id, res)
+            const { password, ...rest } = savedUser._doc
+            res.status(200).json(rest) 
+        }
+        
+    } catch(error) {
+        console.log(error)
+        next(error)
+    }
+}
