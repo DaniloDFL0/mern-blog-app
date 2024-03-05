@@ -1,7 +1,7 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react"
 import { useState } from "react"
 import { HiInformationCircle } from "react-icons/hi"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice"
 import { useDispatch, useSelector } from "react-redux"
 import OAuth from "../components/OAuth"
@@ -11,6 +11,7 @@ const SignInPage = () => {
   const [password, setPassword] = useState("")
   const { isLoading, error: errorMessage } = useSelector((state) => state.user)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleSignIn = async (e) => {
     e.preventDefault()
@@ -33,6 +34,7 @@ const SignInPage = () => {
       }
 
       dispatch(signInSuccess(data))
+      navigate("/")
       
     } catch(error) {
       dispatch(signInFailure(error.message))

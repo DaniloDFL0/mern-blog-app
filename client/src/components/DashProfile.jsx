@@ -5,7 +5,7 @@ import  { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase
 import { app } from "../firebase/firebase"
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { deleteUserFailure, deleteUserStart, deleteUserSuccess, updateStart, updateUserFailure, updateUserSuccess } from "../redux/user/userSlice"
+import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signoutSuccess, updateStart, updateUserFailure, updateUserSuccess } from "../redux/user/userSlice"
 import { toast } from "react-toastify"
 
 const DashProfile = () => {
@@ -107,6 +107,26 @@ const DashProfile = () => {
         }
     }
 
+    const handleSignout = async () => {
+        try {
+            const res = await fetch("/api/auth/signout", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" }
+            })
+            const data = await res.json()
+
+            if(!res.ok) {
+                console.log(data.message)
+            }
+
+            dispatch(signoutSuccess())
+            toast.success("User has been signed out successfully.")
+            
+        } catch(error) {
+            console.log(error.message)
+        }
+    }
+
     return (
         <div className="max-w-lg mx-auto p-3 w-full">
             <div className="text-2xl text-center mb-3">Profile</div>
@@ -152,7 +172,7 @@ const DashProfile = () => {
             )}
             <div className="text-red-500 flex justify-between items-center mt-3">
                 <span onClick={() => setOpenModal(true)} className="cursor-pointer">Delete Account</span>
-                <span className="cursor-pointer">Sign Out</span>
+                <span onClick={handleSignout} className="cursor-pointer">Sign Out</span>
             </div>
             <Modal show={openModal} onClose={() => setOpenModal(false)}>
                 <Modal.Header>Delete Account</Modal.Header>
