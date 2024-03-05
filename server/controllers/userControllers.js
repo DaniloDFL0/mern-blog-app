@@ -6,7 +6,7 @@ export const updateUser = async (req, res, next) => {
     try {
         const { id } = req.params
 
-        if(id !== req.userId.toString()) return next(errorHandler(401, "Not allowed to update this user."))
+        if(id !== req.userId.toString()) return next(errorHandler(403, "Not allowed to update this user."))
         
         if(req.body.password) {
             if(req.body.password.length < 6) return next(errorHandler(400, "Password must be at least 6 characters."))
@@ -28,6 +28,25 @@ export const updateUser = async (req, res, next) => {
         res.status(200).json(rest)
         
     } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
+export const deleteUser = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        if(id !== req.userId.toString()) return next(errorHandler(403, "You are not allowed to delete other user's accounts."))
+
+        const user = await User.findById(id)
+        if(!user) return next(errorHandler(404, "User not found."))
+
+        await User.findByIdAndDelete(id)
+
+        res.status(200).json({ msg: "User is deleted successfully." })
+        
+    } catch(error) {
         console.log(error)
         next(error)
     }

@@ -5,6 +5,8 @@ import SignInPage from "./pages/SignInPage"
 import DashboardPage from "./pages/DashboardPage"
 import HeaderLayout from "./layouts/HeaderLayout"
 import { useSelector } from "react-redux"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const { currentUser } = useSelector((state) => state.user)
@@ -19,6 +21,7 @@ const App = () => {
           <Route path="/dashboard" element={currentUser ? <DashboardPage /> : <Navigate to={"/sign-in"}/>}/>
         </Route>
       </Routes>
+      <ToastContainer autoClose={3000}/>
     </div>
   )
 }
