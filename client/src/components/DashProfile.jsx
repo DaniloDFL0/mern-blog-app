@@ -7,9 +7,10 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { deleteUserFailure, deleteUserStart, deleteUserSuccess, signoutSuccess, updateStart, updateUserFailure, updateUserSuccess } from "../redux/user/userSlice"
 import { toast } from "react-toastify"
+import { Link } from "react-router-dom"
 
 const DashProfile = () => {
-    const { currentUser } = useSelector((state) => state.user)
+    const { currentUser, isLoading } = useSelector((state) => state.user)
     const [imageFile, setImageFile] = useState(null)
     const [imageFileUrl, setImageFileUrl] = useState(null)
     const [updateUser, setUpdateUser] = useState(null)
@@ -161,9 +162,16 @@ const DashProfile = () => {
                     value={inputs.password}
                     onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
                 />
-                <Button type="submit" gradientDuoTone={"purpleToBlue"} outline>
-                    Update Profile
+                <Button type="submit" gradientDuoTone={"purpleToBlue"} outline disabled={isLoading || imageFileUploadProgress}>
+                    {isLoading ? "Loading..." : "Update Profile"}
                 </Button>
+                {currentUser.isAdmin === true && (
+                    <Link to={"/create-post"}>
+                        <Button type="button" gradientDuoTone={"purpleToPink"} className="w-full">
+                            Create a post
+                        </Button>
+                    </Link>
+                )}
             </form>
             {updateUser && (
                 <Alert color={"success"} className="my-2">

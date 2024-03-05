@@ -41,7 +41,7 @@ export const signin = async (req, res, next) => {
 
         if(!user || !isPasswordCorrect) return next(errorHandler(400, "Email or password is incorrect"))
 
-        setCookieAndGenerateToken(user._id, res)
+        setCookieAndGenerateToken(user._id, user.isAdmin, res)
 
         const { password: pass , ...rest } = user._doc
 
@@ -60,7 +60,7 @@ export const googleAuth = async (req, res, next) => {
         const user = await User.findOne({ email })
 
         if(user) {
-            setCookieAndGenerateToken(user._id, res)
+            setCookieAndGenerateToken(user._id, user.isAdmin, res)
             const { password, ...rest } = user._doc
     
             return res.status(200).json(rest)
@@ -76,7 +76,7 @@ export const googleAuth = async (req, res, next) => {
                 profilePicture: googlePhotoURL
             })
             const savedUser = await newUser.save()
-            setCookieAndGenerateToken(savedUser._id, res)
+            setCookieAndGenerateToken(savedUser._id, savedUser.isAdmin, res)
             const { password, ...rest } = savedUser._doc
             res.status(200).json(rest) 
         }

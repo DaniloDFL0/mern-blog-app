@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser"
 import connectToMongoDB from "./db/connectToMongoDB.js"
 import authRoutes from "./routes/authRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
+import postRoutes from "./routes/postRoutes.js"
 
 dotenv.config()
 const app = express()
@@ -14,6 +15,7 @@ app.use(cookieParser())
 // ROUTES
 app.use("/api/auth", authRoutes)
 app.use("/api/users", userRoutes)
+app.use("/api/posts", postRoutes)
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500
