@@ -8,6 +8,7 @@ import { useSelector } from "react-redux"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CreatePostPage from "./pages/CreatePostPage"
+import UpdatePostPage from "./pages/UpdatePostPage"
 
 const App = () => {
   const { currentUser } = useSelector((state) => state.user)
@@ -18,6 +19,7 @@ const App = () => {
         <Route element={<HeaderLayout />}>
           <Route path="/" element={<HomePage />}/>
           <Route path="/create-post" element={currentUser?.isAdmin === true ? <CreatePostPage /> : <Navigate to={"/sign-in"}/>}/>
+          <Route path="/update-post/:postId" element={currentUser?.isAdmin === true ? <UpdatePostPage /> : <Navigate to={"/sign-in"}/>}/>
           <Route path="/sign-in" element={<SignInPage />}/>
           <Route path="/sign-up" element={<SignUpPage />}/>
           <Route path="/dashboard" element={currentUser ? <DashboardPage /> : <Navigate to={"/sign-in"}/>}/>
